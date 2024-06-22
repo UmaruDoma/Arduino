@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 
-//#define BIG_DISPLAY  // WS2812B Matrix Display 8 x 32 LED
+#define BIG_DISPLAY  // WS2812B Matrix Display 8 x 32 LED
 // wenn nicht : U 64 LED Matrix Panel CJMCU/8x8 Modul
 
 /*
@@ -106,6 +106,7 @@
 #define DATA_PIN 3
 #define CLOCK_PIN 13
 CRGB leds[NUM_LEDS];
+int WalkingFaceNumber = 1;
 // LED ===========================
 
 void setup() {
@@ -134,7 +135,7 @@ void setup() {
 // LED ===========================
  
 }
-#define DELAYVAL 3000 // Time (in milliseconds) to pause between pixels
+#define DELAYVAL 2000 // Time (in milliseconds) to pause between pixels
 /*=================================================================================== */
 /* MATRIX DISPLAY Functions */
 /*=================================================================================== */
@@ -192,18 +193,18 @@ CRGB GetColor (int facenumber)
     case(1):  return (CRGB::White );break;
     case(2):  return (CRGB::Blue);break;
     case(3):  return (CRGB::White);break;
-    case(4):  return (CRGB::Pink);break;
+    case(4):  return (CRGB::Magenta);break;
     case(5):  return (CRGB::Green);break;
     case(6):  return (CRGB::White);break;
     case(7):  return (CRGB::Red);break;
     default: return (CRGB::White);
  }
 } 
-//void incrementFaceNumber()
-//{
-//    if (WalkingFaceNumber < NumberofFaces) WalkingFaceNumber+= 1;
-//    else WalkingFaceNumber = 2;
-//}
+void incrementFaceNumber()
+{
+    if (WalkingFaceNumber < NumberofFaces) WalkingFaceNumber+= 1;
+    else WalkingFaceNumber = 1;
+}
 
 void faceOn (int* face,CRGB color) {
      int k = 0;
@@ -220,10 +221,8 @@ void faceOff (){
 }
 void showMatrixTurn(int faceid) {
      
-    //WalkingFaceNumber = num;
     faceOff ();
     FastLED.show(); 
-    //incrementFaceNumber();
     int* theFace = GetFace (faceid);
     CRGB thecolor = GetColor (faceid);
     faceOn (theFace,thecolor);
@@ -292,7 +291,11 @@ void loop() {
         int faceid = GetNumberofFace (TinyIRReceiverData.Command);
         showMatrixTurn(faceid);
     }
-    //showMatrixTurn(WalkingFaceNumber);
+    else {
+        incrementFaceNumber();
+        showMatrixTurn(WalkingFaceNumber);
+    }
+ 
   }
 
 /*
