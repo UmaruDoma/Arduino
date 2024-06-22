@@ -12,6 +12,8 @@
 
 #include <Arduino.h>
 
+//#define BIG_DISPLAY  // WS2812B Matrix Display 8 x 32 LED
+// wenn nicht : U 64 LED Matrix Panel CJMCU/8x8 Modul
 
 /*
  *  TinyReceiver.cpp
@@ -96,7 +98,11 @@
 
 // LED ===========================
 #include <FastLED.h>
+#if defined(BIG_DISPLAY) 
+#define NUM_LEDS 256
+#else
 #define NUM_LEDS 64
+#endif
 #define DATA_PIN 3
 #define CLOCK_PIN 13
 CRGB leds[NUM_LEDS];
@@ -132,22 +138,41 @@ void setup() {
 /*=================================================================================== */
 /* MATRIX DISPLAY Functions */
 /*=================================================================================== */
-/*
-static int NeutralFace[19]  = {62,65,61,66,190,193,189,194,89,102,105,118,121,134,137,150,153,166,999};
-static int SlimEyeFace[15]  = {62,65,190,193,89,102,105,118,121,134,137,150,153,166,999};
-static int Smiley[15]  = {62,65,190,193,189,194,89,102,105,118,121,134,137,150,999};
-static int theLine[33] = {1,14,17,30,33,46,49,62,65,78,81,94,97,110,113,126,129,142,145,158,161,174,177,190,193,206,209,222,225,238,241,254,999};
-static int secLine[12] = {0,1,2,3,4,5,6,7,8,9,10,999};
-*/
+#if defined(BIG_DISPLAY) 
+int NumberofFaces = 7;
 
+static int Smile_white[25]  = {96,111,97,110,102,105,103,104,128,143,142,145,141,146,140,147,139,148,138,149,137,150,135,136,999};
+static int Sad_blue[25]  = {96,111,97,110,102,105,103,104,143,144,129,142,130,141,131,140,132,139,133,138,134,137,136,151,999};
+static int Wow_white[25]  = {96,111,97,110,102,105,103,104,129,130,131,132,133,134,158,157,156,155,154,153,143,144,136,151,999};
+static int Slay_pink[47] = {79,80,65,66,76,84,85,86,71,72,96,97,98,99,100,101,102,103,104,126,125,124,123,122,121,120,128,132,142,141,140,139,138,137,136,159,158,157,175,174,173,163,164,165,166,167,999};
+static int Happy_green[25] = {96,111,97,110,102,105,103,104,128,129,130,131,132,133,134,135,143,136,145,146,147,148,149,150,999};
+static int Heart_white[43] = {98,99,110,109,108,107,112,113,114,115,116,117,126,125,124,123,122,121,130,131,132,133,134,135,142,141,140,139,138,137,144,145,146,147,148,149,158,157,156,155,162,163,999};
+static int Angy_red[37] = {72,79,80,81,85,86,87,93,92,91,90,96,99,100,103,111,110,105,104,129,130,131,132,133,134,143,142,141,140,139,138,137,136,144,151,999};
+#else
+// SMALL DISPLAY
+int NumberofFaces = 5;
 static int NeutralFace[19]  = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,999};
 static int SlimEyeFace[11]  = {40,41,42,43,44,45,46,47,48,49,999};
 static int Smiley[6]  = {55,56,57,58,59,999};
 static int theLine[33] = {1,14,17,30,33,46,49,62,65,78,81,94,97,110,113,126,129,142,145,158,161,174,177,190,193,206,209,222,225,238,241,254,999};
 static int secLine[12] = {0,1,2,3,4,5,6,7,8,9,10,999};
+#endif
 
-int NumberofFaces = 5;
-int WalkingFaceNumber = 1;
+#if defined(BIG_DISPLAY) 
+int* GetFace (int facenumber)
+{
+  switch (facenumber){
+    case(1):  return (&(Smile_white[0]));break;
+    case(2):  return (&(Sad_blue[0]));break;
+    case(3):  return (&(Wow_white[0]));break;
+    case(4):  return (&(Slay_pink[0]));break;
+    case(5):  return (&(Happy_green[0]));break;
+    case(6):  return (&(Heart_white[0]));break;
+    case(7):  return (&(Angy_red[0]));break;
+    default: return (&(Smile_white[0]));
+ }
+} 
+#else
 int* GetFace (int facenumber)
 {
   switch (facenumber){
@@ -159,22 +184,26 @@ int* GetFace (int facenumber)
     default: return (&(NeutralFace[0]));
  }
 } 
+#endif
+
 CRGB GetColor (int facenumber)
 {
   switch (facenumber){
-    case(1):  return (CRGB::Red);break;
-    case(2):  return (CRGB::Yellow);break;
-    case(3):  return (CRGB::AliceBlue);break;
-    case(4):  return (CRGB::Coral);break;
-    case(5):  return (CRGB::ForestGreen);break;
-    default: return (CRGB::Gray);
+    case(1):  return (CRGB::White );break;
+    case(2):  return (CRGB::Blue);break;
+    case(3):  return (CRGB::White);break;
+    case(4):  return (CRGB::Pink);break;
+    case(5):  return (CRGB::Green);break;
+    case(6):  return (CRGB::White);break;
+    case(7):  return (CRGB::Red);break;
+    default: return (CRGB::White);
  }
 } 
-void incrementFaceNumber()
-{
-    if (WalkingFaceNumber < NumberofFaces) WalkingFaceNumber+= 1;
-    else WalkingFaceNumber = 2;
-}
+//void incrementFaceNumber()
+//{
+//    if (WalkingFaceNumber < NumberofFaces) WalkingFaceNumber+= 1;
+//    else WalkingFaceNumber = 2;
+//}
 
 void faceOn (int* face,CRGB color) {
      int k = 0;
