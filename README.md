@@ -1,7 +1,7 @@
 # Arduino
 Small Arduino Programs for TV head cosplay
 
-Rotating faces and faces shown by IR remote control.
+Rotating faces and faces selected by IR remote control shown on LED-Display.
 
 Software:
 - Arduino IDE, version 2.3.2
