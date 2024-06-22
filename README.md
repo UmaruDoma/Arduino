@@ -5,8 +5,8 @@ Rotating faces and faces selected by IR remote control shown on LED-Display.
 
 Software:
 - Arduino IDE, version 2.3.2
-- FastLED by Daniel Garcia, Version 3.7.0
-- IRemote by shirriff, z3t0, ArminJo, Version 4.3.2
+- Library FastLED by Daniel Garcia, Version 3.7.0
+- Library IRemote by shirriff, z3t0, ArminJo, Version 4.3.2
 
 Hardware : 
 - azdelivery Ardunino UNO R3 Compatible
