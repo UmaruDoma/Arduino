@@ -140,37 +140,53 @@ void setup() {
 /* MATRIX DISPLAY Functions */
 /*=================================================================================== */
 #if defined(BIG_DISPLAY) 
-int NumberofFaces = 7;
+int NumberofFaces = 11;
+static int FQlen = 14; 
+static int FaceQueue[14] = {1,10,1,3,11,3,2,4,5,6,7,8,9,8};
 
-static int Smile_white[25]  = {96,111,97,110,102,105,103,104,128,143,142,145,141,146,140,147,139,148,138,149,137,150,135,136,999};
-static int Sad_blue[25]  = {96,111,97,110,102,105,103,104,143,144,129,142,130,141,131,140,132,139,133,138,134,137,136,151,999};
-static int Wow_white[25]  = {96,111,97,110,102,105,103,104,129,130,131,132,133,134,158,157,156,155,154,153,143,144,136,151,999};
-static int Slay_pink[47] = {79,80,65,66,76,84,85,86,71,72,96,97,98,99,100,101,102,103,104,126,125,124,123,122,121,120,128,132,142,141,140,139,138,137,136,159,158,157,175,174,173,163,164,165,166,167,999};
-static int Happy_green[25] = {96,111,97,110,102,105,103,104,128,129,130,131,132,133,134,135,143,136,145,146,147,148,149,150,999};
-static int Heart_white[43] = {98,99,110,109,108,107,112,113,114,115,116,117,126,125,124,123,122,121,130,131,132,133,134,135,142,141,140,139,138,137,144,145,146,147,148,149,158,157,156,155,162,163,999};
-static int Angy_red[37] = {72,79,80,81,85,86,87,93,92,91,90,96,99,100,103,111,110,105,104,129,130,131,132,133,134,143,142,141,140,139,138,137,136,144,151,999};
+///*01*/static int Smile_white[25]  = {96,111,97,110,102,105,103,104,128,143,142,145,141,146,140,147,139,148,138,149,137,150,135,136,999};
+/*01*/static int Big_Eyes_Smile[25] = {96,104,97,105,102,110,103,111,128,136,137,145,138,146,139,147,140,148,141,149,142,150,135,143,999};
+/*02*/static int Sad_blue[25]  = {96,111,97,110,102,105,103,104,143,144,129,142,130,141,131,140,132,139,133,138,134,137,136,151,999};
+/*03*/static int Big_Eyes_Smile_Open[25] = {96,104,97,105,102,110,103,111,128,136,129,145,130,146,131,147,132,148,133,149,134,150,135,143,999};
+/*04*/static int Wow_white[25]  = {96,111,97,110,102,105,103,104,129,130,131,132,133,134,158,157,156,155,154,153,143,144,136,151,999};
+/*05*/static int Slay_pink[47] = {79,80,65,66,76,84,85,86,71,72,96,97,98,99,100,101,102,103,104,126,125,124,123,122,121,120,128,132,142,141,140,139,138,137,136,159,158,157,175,174,173,163,164,165,166,167,999};
+/*06*/static int Happy_green[25] = {96,111,97,110,102,105,103,104,128,129,130,131,132,133,134,135,143,136,145,146,147,148,149,150,999};
+/*07*/static int Heart_white[43] = {98,99,110,109,108,107,112,113,114,115,116,117,126,125,124,123,122,121,130,131,132,133,134,135,142,141,140,139,138,137,144,145,146,147,148,149,158,157,156,155,162,163,999};
+/*08*/static int Angy_red[37] =     {72,79,80,81,85,86,87,93,92,91,90,96,99,100,103,111,110,105,104,129,130,131,132,133,134,143,142,141,140,139,138,137,136,144,151,999};
+/*09*/static int Angy_red_Low[35] = {80,81,85,86,87,93,92,91,90,96,99,100,103,111,110,105,104,129,130,131,132,133,134,143,142,141,140,139,138,137,136,144,151,999};
+/*10*/static int Sml_Eyes_Smile[21] = {104,105,110,111,128,136,137,145,138,146,139,147,140,148,141,149,142,150,135,143,999};
+/*11*/static int Big_Eyes_Smile_Open_Wide[27] = {96,104,97,105,102,110,103,111,128,136,144,129,153,130,154,131,155,132,156,133,157,134,158,135,143,151,999};
+
 #else
 // SMALL DISPLAY
 int NumberofFaces = 5;
-static int NeutralFace[19]  = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,999};
-static int SlimEyeFace[11]  = {40,41,42,43,44,45,46,47,48,49,999};
-static int Smiley[6]  = {55,56,57,58,59,999};
-static int theLine[33] = {1,14,17,30,33,46,49,62,65,78,81,94,97,110,113,126,129,142,145,158,161,174,177,190,193,206,209,222,225,238,241,254,999};
-static int secLine[12] = {0,1,2,3,4,5,6,7,8,9,10,999};
+static int FQlen = 5; 
+static int FaceQueue[25] = {1,2,3,4,5};
+
+/*01*/static int NeutralFace[19]  = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,999};
+/*02*/static int SlimEyeFace[11]  = {40,41,42,43,44,45,46,47,48,49,999};
+/*03*/static int Smiley[6]  = {55,56,57,58,59,999};
+/*04*/static int theLine[33] = {1,14,17,30,33,46,49,62,65,78,81,94,97,110,113,126,129,142,145,158,161,174,177,190,193,206,209,222,225,238,241,254,999};
+/*05*/static int secLine[12] = {0,1,2,3,4,5,6,7,8,9,10,999};
+
 #endif
 
 #if defined(BIG_DISPLAY) 
 int* GetFace (int facenumber)
 {
   switch (facenumber){
-    case(1):  return (&(Smile_white[0]));break;
+    case(1):  return (&(Big_Eyes_Smile[0]));break;
     case(2):  return (&(Sad_blue[0]));break;
-    case(3):  return (&(Wow_white[0]));break;
-    case(4):  return (&(Slay_pink[0]));break;
-    case(5):  return (&(Happy_green[0]));break;
-    case(6):  return (&(Heart_white[0]));break;
-    case(7):  return (&(Angy_red[0]));break;
-    default: return (&(Smile_white[0]));
+    case(3):  return (&(Big_Eyes_Smile_Open[0]));break;
+    case(4):  return (&(Wow_white[0]));break;
+    case(5):  return (&(Slay_pink[0]));break;
+    case(6):  return (&(Happy_green[0]));break;
+    case(7):  return (&(Heart_white[0]));break;
+    case(8):  return (&(Angy_red[0]));break;
+    case(9):  return (&(Angy_red_Low[0]));break;
+    case(10): return (&(Sml_Eyes_Smile[0]));break;
+    case(11): return (&(Big_Eyes_Smile_Open_Wide[0]));break;
+    default: return  (&(Big_Eyes_Smile[0]));
  }
 } 
 #else
@@ -193,17 +209,28 @@ CRGB GetColor (int facenumber)
     case(1):  return (CRGB::White );break;
     case(2):  return (CRGB::Blue);break;
     case(3):  return (CRGB::White);break;
-    case(4):  return (CRGB::Magenta);break;
-    case(5):  return (CRGB::Green);break;
-    case(6):  return (CRGB::White);break;
-    case(7):  return (CRGB::Red);break;
+    case(4):  return (CRGB::White);break;
+    case(5):  return (CRGB::Magenta);break;
+    case(6):  return (CRGB::Green);break;
+    case(7):  return (CRGB::White);break;
+    case(8):  return (CRGB::Red);break;
+    case(9):  return (CRGB::Red);break;
+    case(10):  return (CRGB::White);break;
+    case(11):  return (CRGB::White);break;
     default: return (CRGB::White);
  }
 } 
+static int FaceQueueIndex = 0;
 void incrementFaceNumber()
 {
-    if (WalkingFaceNumber < NumberofFaces) WalkingFaceNumber+= 1;
-    else WalkingFaceNumber = 1;
+  //FQlen
+    
+    if (FaceQueueIndex < FQlen) FaceQueueIndex+= 1;
+    else FaceQueueIndex = 1;
+    int tempface = FaceQueue[FaceQueueIndex];
+    if (tempface < NumberofFaces) WalkingFaceNumber = tempface;
+    else WalkingFaceNumber = 1; // eines muss immer da sein
+
 }
 
 void faceOn (int* face,CRGB color) {
@@ -256,6 +283,9 @@ int  GetNumberofFace (uint8_t number)
     case(66):  return 7;break;
     case(82):  return 8;break;
     case(74):  return 9;break;
+    case(22):  return 10;break;
+    case(25):  return 11;break;
+
     //oben
     // 69 70 71
     // 68 64 67
