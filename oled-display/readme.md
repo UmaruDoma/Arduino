@@ -2,7 +2,7 @@ oled display anschliessen
 
 OLED                Arduino Nano
 --------------------------------
-GND   ------------> GND
+GND   ------------> GND  <nl>
 VCC   ------------> 5V
 SCL   ------------> A5
 SDA   ------------> A4
